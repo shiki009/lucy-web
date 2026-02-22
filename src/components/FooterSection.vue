@@ -70,8 +70,8 @@ onMounted(() => {
       <div class="footer-info">
         <div class="info-block">
           <h3 class="info-title">{{ t.footer.lucyTitle }}</h3>
-          <p class="info-text" v-for="(line, i) in t.footer.lucyInfo.split('\n')" :key="i">
-            {{ line }}<br v-if="i < t.footer.lucyInfo.split('\n').length - 1" />
+          <p class="info-text">
+            <template v-for="(line, i) in t.footer.lucyInfo.split('\n')" :key="i">{{ line }}<br v-if="i < t.footer.lucyInfo.split('\n').length - 1" /></template>
           </p>
         </div>
 

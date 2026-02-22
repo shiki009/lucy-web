@@ -113,6 +113,12 @@ img {
   transform: translateY(-2px);
 }
 
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 /* Section spacing */
 section {
   position: relative;
