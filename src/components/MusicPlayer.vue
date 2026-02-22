@@ -1,16 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from '@/i18n/useI18n.js'
+
+const { t } = useI18n()
 
 const isPlaying = ref(false)
 const audioRef = ref(null)
 const isLoaded = ref(false)
 const showTooltip = ref(true)
 
-// Local music file - place your MP3 in public/music/background.mp3
 const musicUrl = '/music/background.mp3'
 
 onMounted(() => {
-  // Hide tooltip after 5 seconds
   setTimeout(() => {
     showTooltip.value = false
   }, 5000)
@@ -18,7 +19,7 @@ onMounted(() => {
 
 const toggleMusic = () => {
   if (!audioRef.value) return
-  
+
   if (isPlaying.value) {
     audioRef.value.pause()
     isPlaying.value = false
@@ -40,27 +41,26 @@ const onCanPlay = () => {
 
 <template>
   <div class="music-player">
-    <audio 
-      ref="audioRef" 
-      :src="musicUrl" 
-      loop 
+    <audio
+      ref="audioRef"
+      :src="musicUrl"
+      loop
       preload="auto"
       @canplay="onCanPlay"
     ></audio>
-    
-    <button 
-      class="music-btn" 
+
+    <button
+      class="music-btn"
       @click="toggleMusic"
       :class="{ playing: isPlaying, loaded: isLoaded }"
-      :title="isPlaying ? 'Pause music' : 'Play music'"
+      :title="isPlaying ? t.musicPlayer.pauseTitle : t.musicPlayer.playTitle"
+      :aria-label="isPlaying ? t.musicPlayer.pauseTitle : t.musicPlayer.playTitle"
     >
       <div class="music-icon">
-        <!-- Music note icon when not playing -->
-        <svg v-if="!isPlaying" viewBox="0 0 24 24" fill="currentColor">
+        <svg v-if="!isPlaying" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
         </svg>
-        <!-- Animated waves when playing -->
-        <div v-else class="sound-waves">
+        <div v-else class="sound-waves" aria-hidden="true">
           <span class="wave"></span>
           <span class="wave"></span>
           <span class="wave"></span>
@@ -68,10 +68,10 @@ const onCanPlay = () => {
         </div>
       </div>
     </button>
-    
+
     <transition name="fade">
       <div v-if="showTooltip && isLoaded" class="music-tooltip">
-        Click to play music
+        {{ t.musicPlayer.playTooltip }}
       </div>
     </transition>
   </div>
@@ -228,12 +228,12 @@ const onCanPlay = () => {
     bottom: 1.5rem;
     right: 1.5rem;
   }
-  
+
   .music-btn {
     width: 48px;
     height: 48px;
   }
-  
+
   .music-tooltip {
     display: none;
   }

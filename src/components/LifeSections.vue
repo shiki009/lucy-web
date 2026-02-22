@@ -1,7 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useI18n } from '@/i18n/useI18n.js'
+import { useScrollTrigger } from '@/composables/useScrollTrigger.js'
+
+const { t } = useI18n()
+const { track } = useScrollTrigger()
 
 import lucyBlanketBurrito from '@/assets/images/lucy-blanket-burrito.png'
 import lucyBoardGame from '@/assets/images/lucy-board-game.png'
@@ -13,7 +17,7 @@ const leftRef = ref(null)
 const rightRef = ref(null)
 
 onMounted(() => {
-  gsap.fromTo(leftRef.value,
+  track(gsap.fromTo(leftRef.value,
     { opacity: 0, x: -50 },
     {
       opacity: 1,
@@ -25,9 +29,9 @@ onMounted(() => {
         start: 'top 70%',
       }
     }
-  )
-  
-  gsap.fromTo(rightRef.value,
+  ))
+
+  track(gsap.fromTo(rightRef.value,
     { opacity: 0, x: 50 },
     {
       opacity: 1,
@@ -39,7 +43,7 @@ onMounted(() => {
         start: 'top 70%',
       }
     }
-  )
+  ))
 })
 </script>
 
@@ -48,62 +52,56 @@ onMounted(() => {
     <!-- At Home Section -->
     <div ref="leftRef" class="life-panel home-panel">
       <div class="panel-content">
-        <span class="panel-label">Cozy Moments</span>
+        <span class="panel-label">{{ t.life.homeLabel }}</span>
         <h2 class="panel-title">
-          At<br/>
-          <span class="accent">Home</span>
+          {{ t.life.homeTitleLine1 }}<br/>
+          <span class="accent">{{ t.life.homeTitleAccent }}</span>
         </h2>
-        <p class="panel-description">
-          Naps on the couch, treats in the kitchen, and endless cuddles. 
-          Home is where the heart (and the food bowl) is.
-        </p>
+        <p class="panel-description">{{ t.life.homeDescription }}</p>
         <div class="panel-stats">
           <div class="stat">
-            <span class="stat-number">∞</span>
-            <span class="stat-label">Naps taken</span>
+            <span class="stat-number">{{ t.life.homeStat1Number }}</span>
+            <span class="stat-label">{{ t.life.homeStat1Label }}</span>
           </div>
           <div class="stat">
-            <span class="stat-number">100%</span>
-            <span class="stat-label">Good girl rate</span>
+            <span class="stat-number">{{ t.life.homeStat2Number }}</span>
+            <span class="stat-label">{{ t.life.homeStat2Label }}</span>
           </div>
         </div>
       </div>
       <div class="panel-images">
         <div class="image-stack">
-          <img :src="lucyBlanketBurrito" alt="Lucy burrito mode" class="stack-img img-1" />
-          <img :src="lucyBoardGame" alt="Game night Lucy" class="stack-img img-2" />
+          <img :src="lucyBlanketBurrito" :alt="t.life.homeImg1Alt" class="stack-img img-1" loading="lazy" />
+          <img :src="lucyBoardGame" :alt="t.life.homeImg2Alt" class="stack-img img-2" loading="lazy" />
         </div>
       </div>
       <div class="panel-bg"></div>
     </div>
-    
+
     <!-- Adventures Section -->
     <div ref="rightRef" class="life-panel adventures-panel">
       <div class="panel-content">
-        <span class="panel-label">Outdoor Explorer</span>
+        <span class="panel-label">{{ t.life.adventuresLabel }}</span>
         <h2 class="panel-title">
-          <span class="accent">Adventures</span><br/>
-          Await
+          <span class="accent">{{ t.life.adventuresTitleAccent }}</span><br/>
+          {{ t.life.adventuresTitleLine2 }}
         </h2>
-        <p class="panel-description">
-          From garden patrols to city explorations. Every walk is a new 
-          adventure, every sniff a discovery.
-        </p>
+        <p class="panel-description">{{ t.life.adventuresDescription }}</p>
         <div class="panel-stats">
           <div class="stat">
-            <span class="stat-number">1000+</span>
-            <span class="stat-label">Walks enjoyed</span>
+            <span class="stat-number">{{ t.life.adventuresStat1Number }}</span>
+            <span class="stat-label">{{ t.life.adventuresStat1Label }}</span>
           </div>
           <div class="stat">
-            <span class="stat-number">∞</span>
-            <span class="stat-label">Sniffs taken</span>
+            <span class="stat-number">{{ t.life.adventuresStat2Number }}</span>
+            <span class="stat-label">{{ t.life.adventuresStat2Label }}</span>
           </div>
         </div>
       </div>
       <div class="panel-images">
         <div class="image-stack">
-          <img :src="lucyAutumnLeaves" alt="Lucy in autumn park" class="stack-img img-1" />
-          <img :src="lucyBbq" alt="BBQ Lucy" class="stack-img img-2" />
+          <img :src="lucyAutumnLeaves" :alt="t.life.adventuresImg1Alt" class="stack-img img-1" loading="lazy" />
+          <img :src="lucyBbq" :alt="t.life.adventuresImg2Alt" class="stack-img img-2" loading="lazy" />
         </div>
       </div>
       <div class="panel-bg"></div>
@@ -267,12 +265,12 @@ onMounted(() => {
   .life-sections {
     grid-template-columns: 1fr;
   }
-  
+
   .life-panel {
     min-height: 80vh;
     padding: 3rem 2rem;
   }
-  
+
   .panel-images {
     position: relative;
     right: auto;
@@ -280,23 +278,23 @@ onMounted(() => {
     transform: none;
     margin-top: 2rem;
   }
-  
+
   .image-stack {
     width: 100%;
     height: 300px;
     display: flex;
     justify-content: center;
   }
-  
+
   .stack-img {
     width: 180px;
     height: 250px;
   }
-  
+
   .img-1 {
     position: relative;
   }
-  
+
   .img-2 {
     position: absolute;
     left: 50%;
@@ -308,7 +306,7 @@ onMounted(() => {
   .panel-title {
     font-size: 2.5rem;
   }
-  
+
   .stack-img {
     width: 150px;
     height: 200px;

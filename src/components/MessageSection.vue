@@ -1,14 +1,18 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useI18n } from '@/i18n/useI18n.js'
+import { useScrollTrigger } from '@/composables/useScrollTrigger.js'
+
+const { t } = useI18n()
+const { track } = useScrollTrigger()
 
 const sectionRef = ref(null)
 const quoteRef = ref(null)
 const signatureRef = ref(null)
 
 onMounted(() => {
-  gsap.fromTo(quoteRef.value,
+  track(gsap.fromTo(quoteRef.value,
     { opacity: 0, y: 60 },
     {
       opacity: 1,
@@ -20,9 +24,9 @@ onMounted(() => {
         start: 'top 70%',
       }
     }
-  )
-  
-  gsap.fromTo(signatureRef.value,
+  ))
+
+  track(gsap.fromTo(signatureRef.value,
     { opacity: 0, scale: 0.8, rotate: -5 },
     {
       opacity: 1,
@@ -35,7 +39,7 @@ onMounted(() => {
         start: 'top 60%',
       }
     }
-  )
+  ))
 })
 </script>
 
@@ -43,7 +47,7 @@ onMounted(() => {
   <section ref="sectionRef" class="message-section">
     <div class="message-container">
       <div class="message-header">
-        <div class="paw-print">
+        <div class="paw-print" aria-hidden="true">
           <svg viewBox="0 0 100 100" fill="currentColor">
             <ellipse cx="50" cy="65" rx="22" ry="18"/>
             <ellipse cx="25" cy="45" rx="12" ry="14"/>
@@ -52,36 +56,32 @@ onMounted(() => {
             <ellipse cx="65" cy="25" rx="10" ry="12"/>
           </svg>
         </div>
-        <span class="message-label">Message from Lucy</span>
+        <span class="message-label">{{ t.message.label }}</span>
       </div>
-      
+
       <blockquote ref="quoteRef" class="message-quote">
-        <span class="highlight">Every day</span> is a new adventure waiting to happen. 
-        From morning stretches to evening cuddles, I believe in 
-        <span class="highlight">living fully</span> — with my tail wagging 
-        and my heart open. Life is about the 
-        <span class="highlight">small moments</span>: a good treat, 
-        a sunny spot, and the people who love you.
+        <template v-for="(segment, i) in t.message.segments" :key="i">
+          <span v-if="segment.highlight" class="highlight">{{ segment.text }}</span>
+          <template v-else>{{ segment.text }}</template>
+        </template>
       </blockquote>
-      
+
       <div ref="signatureRef" class="signature-area">
-        <svg class="paw-signature" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <!-- Stylized "Lucy" written with paw-like curves -->
+        <svg class="paw-signature" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <path d="M20 60 Q30 20 40 40 Q50 60 50 60" />
           <path d="M60 35 Q60 60 75 60 Q90 60 90 45" />
           <path d="M100 35 Q85 45 100 60 Q115 45 100 35" />
           <path d="M120 35 L140 60 M140 35 L160 60" />
-          <!-- Small paw at the end -->
           <circle cx="175" cy="55" r="6" fill="currentColor" />
           <circle cx="165" cy="45" r="4" fill="currentColor" />
           <circle cx="175" cy="40" r="4" fill="currentColor" />
           <circle cx="185" cy="45" r="4" fill="currentColor" />
         </svg>
-        <span class="signature-date">Since December 13, 2020</span>
+        <span class="signature-date">{{ t.message.signatureDate }}</span>
       </div>
     </div>
-    
-    <div class="decorative-elements">
+
+    <div class="decorative-elements" aria-hidden="true">
       <div class="deco-line line-1"></div>
       <div class="deco-line line-2"></div>
     </div>
@@ -201,7 +201,7 @@ onMounted(() => {
   .message-section {
     padding: 4rem 1.5rem;
   }
-  
+
   .message-quote {
     font-size: 1.25rem;
   }

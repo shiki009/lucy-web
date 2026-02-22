@@ -1,6 +1,11 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { gsap } from 'gsap'
+import { useI18n } from '@/i18n/useI18n.js'
+import { useScrollTrigger } from '@/composables/useScrollTrigger.js'
+
+const { t } = useI18n()
+const { track } = useScrollTrigger()
 
 const birthDate = new Date('2020-12-13')
 const now = new Date()
@@ -22,8 +27,8 @@ const scrollIndicatorRef = ref(null)
 
 onMounted(() => {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-  
-  tl.fromTo(titleRef.value, 
+
+  tl.fromTo(titleRef.value,
     { opacity: 0, y: 100, scale: 0.9 },
     { opacity: 1, y: 0, scale: 1, duration: 1.2 }
   )
@@ -43,8 +48,7 @@ onMounted(() => {
     '-=0.2'
   )
 
-  // Subtle parallax - only affects Y position, not opacity
-  gsap.to(titleRef.value, {
+  track(gsap.to(titleRef.value, {
     yPercent: -30,
     scrollTrigger: {
       trigger: heroRef.value,
@@ -52,38 +56,38 @@ onMounted(() => {
       end: 'bottom top',
       scrub: true
     }
-  })
+  }))
 })
 </script>
 
 <template>
   <section ref="heroRef" class="hero">
-    <div class="hero-bg">
+    <div class="hero-bg" aria-hidden="true">
       <div class="gradient-orb orb-1"></div>
       <div class="gradient-orb orb-2"></div>
       <div class="gradient-orb orb-3"></div>
     </div>
-    
+
     <div class="hero-content">
       <div class="hero-badge">
         <span class="paw-icon">🐾</span>
-        <span>Labrador Retriever</span>
+        <span>{{ t.hero.badge }}</span>
       </div>
-      
-      <h1 ref="titleRef" class="hero-title">Lucy</h1>
-      
+
+      <h1 ref="titleRef" class="hero-title">{{ t.hero.title }}</h1>
+
       <p ref="subtitleRef" class="hero-subtitle">
-        Black Labrador Retriever <span class="accent">since 2020</span>
+        {{ t.hero.subtitle }} <span class="accent">{{ t.hero.subtitleAccent }}</span>
       </p>
-      
+
       <div ref="ageRef" class="age-badge">
         <span class="age-number">{{ age }}</span>
-        <span class="age-label">years of joy</span>
+        <span class="age-label">{{ t.hero.ageLabel }}</span>
       </div>
     </div>
-    
-    <div ref="scrollIndicatorRef" class="scroll-indicator">
-      <span>Scroll to explore</span>
+
+    <div ref="scrollIndicatorRef" class="scroll-indicator" aria-hidden="true">
+      <span>{{ t.hero.scrollText }}</span>
       <div class="scroll-line"></div>
     </div>
   </section>
@@ -269,11 +273,11 @@ onMounted(() => {
   .hero-title {
     font-size: clamp(4rem, 25vw, 8rem);
   }
-  
+
   .age-badge {
     padding: 1rem 2rem;
   }
-  
+
   .age-number {
     font-size: 3rem;
   }
