@@ -1,0 +1,145 @@
+/* CSS Variables */
+:root {
+  --color-primary: #1a1a1a;
+  --color-accent: #D4A574;
+  --color-secondary: #F5F0E8;
+  --color-highlight: #E8A87C;
+  --color-text: #1a1a1a;
+  --color-text-light: #666666;
+  --color-white: #ffffff;
+  
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-highlight);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* Link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s var(--transition-smooth);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+/* Image defaults */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s var(--transition-smooth);
+}
+
+.btn:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+/* Section spacing */
+section {
+  position: relative;
+}
+
+/* Reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s var(--transition-smooth), 
+              transform 0.8s var(--transition-smooth);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Accent text */
+.accent {
+  color: var(--color-accent);
+}
+
+/* Signature style */
+.signature {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--color-accent);
+}
